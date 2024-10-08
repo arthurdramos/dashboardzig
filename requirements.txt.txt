@@ -1,0 +1,4 @@
+streamlit
+pandas
+plotly
+office365-rest-python-client
