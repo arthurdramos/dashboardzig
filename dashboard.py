@@ -7,7 +7,7 @@ import streamlit as st
 import plotly.express as px
 
 # Detalhes da autenticação e URL do SharePoint
-url_shrpt = "https://zigpay.sharepoint.com/sites/Plan.Comercial-2023/"  # Substitua pelo URL correto do seu SharePoint
+url_shrpt = 'https://zigpay.sharepoint.com/sites/Plan.Comercial-2023/'
 username_shrpt = "arthur.ramos@zig.fun"
 password_shrpt = "Project@64"
 file_url_shrpt = "/sites/Plan.Comercial-2023/Shared Documents/Projetos/Novo Relatório Cesta de Produtos/Relatório Cesta de Produtos.xlsx"
@@ -45,8 +45,29 @@ df['%'] = pd.to_numeric(df['%'], errors='coerce') * 100
 # Ordenar o dataframe pela coluna 'Pontuação Total' em ordem decrescente
 df = df.sort_values(by='Pontuação Total', ascending=False)
 
+# Adicionar CSS para centralizar o conteúdo
+st.markdown(
+    """
+    <style>
+    .centered-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    </style>
+    """, unsafe_allow_html=True
+)
+
+# Centralizar o conteúdo com uma div
+st.markdown('<div class="centered-content">', unsafe_allow_html=True)
+
 st.title('Relatório de Produtos:')
 st.subheader('Pontuação Geral Eventos')
+
+# Exibir o dataframe completo primeiro, centralizado
+st.title('Dados completos')
+st.dataframe(df)
 
 # Criar um filtro para selecionar o comercial
 comercial_selecionado = st.selectbox('Selecione o Comercial', df['Comercial'].unique())
@@ -67,9 +88,5 @@ fig.for_each_trace(lambda t: t.update(texttemplate='%{y:.2f}%', textposition='ou
 # Exibir o gráfico no Streamlit
 st.plotly_chart(fig)
 
-# Formatar a coluna 'Meta' como porcentagem no DataFrame
-df['%'] = df['%'].apply(lambda x: "{:.2f}%".format(x))
-
-# Exibir o dataframe completo abaixo do gráfico
-st.title('Dados completos')
-st.dataframe(df)
+# Fechar a div centralizada
+st.markdown('</div>', unsafe_allow_html=True)
